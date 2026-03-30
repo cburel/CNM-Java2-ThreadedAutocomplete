@@ -1,3 +1,4 @@
+
 /* INSTRUCTIONS
 Your assignment is to complete the four TODOs
 in this document, starting with the top TODO
@@ -83,72 +84,97 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.Color;
 
-public class SuggestionGUI extends JFrame 
-{
-	private JTextField enterField;
-	
-	/* TODO: Declare three private JTextArea
-	instance variables.
-	Test that the code still runs and compiles
-	after this. You should notice no changes
-	at this point. */
-	
-	
-	// set up GUI
-	public SuggestionGUI()
-	{
-		super("Autocomplete from novels");
-		
-		setLayout(null);
-		
-		enterField = new JTextField("Enter text here");
-		enterField.setFont(new Font("Serif", Font.PLAIN, 32));
-		enterField.setBackground(Color.blue);
-		enterField.setForeground(Color.yellow);
-		enterField.setBounds(10,10,800,60);
-		add(enterField);
-		
-		/* TODO: Create 3 JTextArea objects and
-		add them to this JFrame. Each the
-		JTextArea will display suggested 
-		autocomplete text for one of the three
-		novels. I recommend using the following
-		setBounds commands for spacing and sizing
-		the JTextAreas on the GUI:
-		For the first display:
-			setBounds(10,80,800,200);
-		For the second:
-			setBounds(10,300,800,200);
-		For the third:
-			setBounds(10,520,800,200);
-		Run and test your code. You should notice
-		three new text areas on the GUI. */
-		
-		setSize(840, 840); // set size of window
-		setVisible(true);  // show window
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		/* TODO Instantiate three new
-		ThreadedAutocomplete objects. All three
-		will take the enterField as their second
-		input to the constructor. Each thread
-		will take a different JTextArea as their
-		third input and a different novel as
-		their first input from among:
-			"Frankenstein.txt"
-			"MobyDick.txt"
-			"GreatExpectations.txt"
-		Run and test your code. You should notice
-		no new features at this point. */
-		
-		
-		/* TODO: Write code to start all three
-		threads running concurrently.
-		Run and test your code. You should notice
-		text from the three novels appearing in
-		the three text areas (unless there is no
-		match in the novel with the most recent
-		word). */
-		
-	}
+public class SuggestionGUI extends JFrame {
+    private JTextField enterField;
+
+    /*
+     * TODO: Declare three private JTextArea
+     * instance variables.
+     * Test that the code still runs and compiles
+     * after this. You should notice no changes
+     * at this point.
+     */
+    private JTextArea firstDisplay;
+    private JTextArea secondDisplay;
+    private JTextArea thirdDisplay;
+
+    // set up GUI
+    public SuggestionGUI() {
+        super("Autocomplete from novels");
+
+        setLayout(null);
+
+        enterField = new JTextField("Enter text here");
+        enterField.setFont(new Font("Serif", Font.PLAIN, 32));
+        enterField.setBackground(Color.blue);
+        enterField.setForeground(Color.yellow);
+        enterField.setBounds(10, 10, 800, 60);
+        add(enterField);
+
+        /*
+         * TODO: Create 3 JTextArea objects and
+         * add them to this JFrame. Each the
+         * JTextArea will display suggested
+         * autocomplete text for one of the three
+         * novels. I recommend using the following
+         * setBounds commands for spacing and sizing
+         * the JTextAreas on the GUI:
+         * For the first display:
+         * setBounds(10,80,800,200);
+         * For the second:
+         * setBounds(10,300,800,200);
+         * For the third:
+         * setBounds(10,520,800,200);
+         * Run and test your code. You should notice
+         * three new text areas on the GUI.
+         */
+        firstDisplay = new JTextArea();
+        firstDisplay.setBounds(10, 80, 800, 200);
+        add(firstDisplay);
+
+        secondDisplay = new JTextArea();
+        secondDisplay.setBounds(10, 300, 800, 200);
+        add(secondDisplay);
+
+        thirdDisplay = new JTextArea();
+        thirdDisplay.setBounds(10, 520, 800, 200);
+        add(thirdDisplay);
+
+        setSize(840, 840); // set size of window
+        setVisible(true); // show window
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        /*
+         * TODO Instantiate three new
+         * ThreadedAutocomplete objects. All three
+         * will take the enterField as their second
+         * input to the constructor. Each thread
+         * will take a different JTextArea as their
+         * third input and a different novel as
+         * their first input from among:
+         * "Frankenstein.txt"
+         * "MobyDick.txt"
+         * "GreatExpectations.txt"
+         * Run and test your code. You should notice
+         * no new features at this point.
+         */
+        ThreadedAutocomplete frankenstein = new ThreadedAutocomplete("Frankenstein.txt", enterField, firstDisplay);
+        ThreadedAutocomplete mobyDick = new ThreadedAutocomplete("MobyDick.txt", enterField, secondDisplay);
+        ThreadedAutocomplete greatExpectations = new ThreadedAutocomplete("GreatExpectations.txt", enterField,
+                thirdDisplay);
+
+        /*
+         * TODO: Write code to start all three
+         * threads running concurrently.
+         * Run and test your code. You should notice
+         * text from the three novels appearing in
+         * the three text areas (unless there is no
+         * match in the novel with the most recent
+         * word).
+         */
+        frankenstein.start();
+        mobyDick.start();
+        greatExpectations.start();
+
+    }
 }
