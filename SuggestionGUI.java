@@ -29,6 +29,7 @@ OPTIONS:
 	Currently typing the word "quit" into the
 	JTextField causes the threads to exit. Make
 	it so that "quit" also closes the GUI.
+     -> in here, join threads then call method to quit gui
 
 	---BREAK BETWEEN WORDS
 	The wrappedToFit method in 
@@ -77,6 +78,8 @@ additional modifications beyond the required one
 (up to 5 points each).
 */
 import java.io.IOException;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -97,6 +100,10 @@ public class SuggestionGUI extends JFrame {
     private JTextArea firstDisplay;
     private JTextArea secondDisplay;
     private JTextArea thirdDisplay;
+
+    private JButton firstButton;
+    private JButton secondButton;
+    private JButton thirdbutton;
 
     // set up GUI
     public SuggestionGUI() {
@@ -128,16 +135,22 @@ public class SuggestionGUI extends JFrame {
          * Run and test your code. You should notice
          * three new text areas on the GUI.
          */
+
+        // create and size the display areas, set them to be uneditable, and add them to
+        // the GUI
         firstDisplay = new JTextArea();
         firstDisplay.setBounds(10, 80, 800, 200);
+        firstDisplay.setEditable(false);
         add(firstDisplay);
 
         secondDisplay = new JTextArea();
         secondDisplay.setBounds(10, 300, 800, 200);
+        secondDisplay.setEditable(false);
         add(secondDisplay);
 
         thirdDisplay = new JTextArea();
         thirdDisplay.setBounds(10, 520, 800, 200);
+        thirdDisplay.setEditable(false);
         add(thirdDisplay);
 
         setSize(840, 840); // set size of window
@@ -176,5 +189,17 @@ public class SuggestionGUI extends JFrame {
         mobyDick.start();
         greatExpectations.start();
 
+        // join the threads so that main waits on them before completing
+        try {
+            frankenstein.join();
+            mobyDick.join();
+            greatExpectations.join();
+        } catch (InterruptedException e) {
+            System.out.println("Thread interrupted");
+            e.printStackTrace();
+        }
+
+        // close the gui (happens on entering the text "quit")
+        dispose();
     }
 }
