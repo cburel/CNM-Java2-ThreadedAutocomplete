@@ -77,7 +77,11 @@ Small amounts of extra credit are available for
 additional modifications beyond the required one
 (up to 5 points each).
 */
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -85,6 +89,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 //Extra imports for improved interface readability
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 
 public class SuggestionGUI extends JFrame {
@@ -103,7 +109,10 @@ public class SuggestionGUI extends JFrame {
 
     private JButton firstButton;
     private JButton secondButton;
-    private JButton thirdbutton;
+    private JButton thirdButton;
+
+    private FileWriter writer;
+    private String filePath;
 
     // set up GUI
     public SuggestionGUI() {
@@ -117,6 +126,14 @@ public class SuggestionGUI extends JFrame {
         enterField.setForeground(Color.yellow);
         enterField.setBounds(10, 10, 800, 60);
         add(enterField);
+
+        try {
+            filePath = "output.txt";
+            writer = new FileWriter(filePath);
+        } catch (IOException e) {
+            System.out.println("IO exception: could not create FileWriter");
+            e.printStackTrace();
+        }
 
         /*
          * TODO: Create 3 JTextArea objects and
@@ -136,6 +153,8 @@ public class SuggestionGUI extends JFrame {
          * three new text areas on the GUI.
          */
 
+        // TODO: jscrollpane
+
         // create and size the display areas, set them to be uneditable, and add them to
         // the GUI
         firstDisplay = new JTextArea();
@@ -143,15 +162,48 @@ public class SuggestionGUI extends JFrame {
         firstDisplay.setEditable(false);
         add(firstDisplay);
 
+        // create button to append first display text to output file
+        firstButton = new JButton("Append");
+        firstButton.setBounds(10, 280, 80, 20);
+        add(firstButton);
+        firstButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // call write to file method
+                appendToFile(firstDisplay.getText(), filePath);
+            }
+        });
+
         secondDisplay = new JTextArea();
-        secondDisplay.setBounds(10, 300, 800, 200);
+        secondDisplay.setBounds(10, 320, 800, 200);
         secondDisplay.setEditable(false);
         add(secondDisplay);
 
+        // create button to append second display text to output file
+        secondButton = new JButton("Append");
+        secondButton.setBounds(10, 520, 80, 20);
+        add(secondButton);
+        secondButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // call write to file method
+                appendToFile(secondDisplay.getText(), filePath);
+            }
+        });
+
         thirdDisplay = new JTextArea();
-        thirdDisplay.setBounds(10, 520, 800, 200);
+        thirdDisplay.setBounds(10, 560, 800, 200);
         thirdDisplay.setEditable(false);
         add(thirdDisplay);
+
+        // create button to append third display text to output file
+        thirdButton = new JButton("Append");
+        thirdButton.setBounds(10, 760, 80, 20);
+        add(thirdButton);
+        thirdButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // call write to file method
+                appendToFile(thirdDisplay.getText(), filePath);
+            }
+        });
 
         setSize(840, 840); // set size of window
         setVisible(true); // show window
@@ -201,5 +253,22 @@ public class SuggestionGUI extends JFrame {
 
         // close the gui (happens on entering the text "quit")
         dispose();
+
+        try {
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error closing file writer");
+            e.printStackTrace();
+        }
+    }
+
+    // TODO: add append enter field text
+    private void appendToFile(String displayText, String filePath) {
+        try {
+            Files.writeString(Path.of(filePath), displayText, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            System.out.println("Could not write to file " + filePath);
+            e.printStackTrace();
+        }
     }
 }
