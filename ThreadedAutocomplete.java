@@ -162,7 +162,6 @@ public class ThreadedAutocomplete extends Thread {
     // Scanner location and the next period
     // or question mark.
     private String getTextToPeriod(Scanner input, String remainder) {
-        // TODO: clean this up if editing to make end on ! also
         int i = remainder.indexOf(".");
         int j = remainder.indexOf("?");
         int x = i;
