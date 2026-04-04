@@ -169,7 +169,7 @@ public class SuggestionGUI extends JFrame {
         firstButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // call write to file method
-                appendToFile(firstDisplay.getText(), filePath);
+                appendToFile(firstDisplay.getText(), enterField.getText(), filePath);
             }
         });
 
@@ -185,7 +185,7 @@ public class SuggestionGUI extends JFrame {
         secondButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // call write to file method
-                appendToFile(secondDisplay.getText(), filePath);
+                appendToFile(secondDisplay.getText(), enterField.getText(), filePath);
             }
         });
 
@@ -201,7 +201,7 @@ public class SuggestionGUI extends JFrame {
         thirdButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // call write to file method
-                appendToFile(thirdDisplay.getText(), filePath);
+                appendToFile(thirdDisplay.getText(), enterField.getText(), filePath);
             }
         });
 
@@ -263,9 +263,9 @@ public class SuggestionGUI extends JFrame {
     }
 
     // TODO: add append enter field text
-    private void appendToFile(String displayText, String filePath) {
+    private void appendToFile(String displayText, String fieldText, String filePath) {
         try {
-            Files.writeString(Path.of(filePath), displayText, StandardOpenOption.APPEND);
+            Files.writeString(Path.of(filePath), fieldText + " " + displayText, StandardOpenOption.APPEND);
         } catch (IOException e) {
             System.out.println("Could not write to file " + filePath);
             e.printStackTrace();
